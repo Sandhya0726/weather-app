@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { weatherCodeMap } from '../constants/WeatherCode';
+import { WeatherCodeIcons, weatherCodeMap } from '../constants/WeatherCode';
 import type { GeoData, WeatherData } from '../types/WeatherDataTypes';
+import '../styles/Weather.css';
 
 const Weather = () => {
   const [cityName, setCityName] = useState('');
@@ -12,9 +13,8 @@ const Weather = () => {
       const res = await fetch(
         `https://geocoding-api.open-meteo.com/v1/search?name=${cityName}`
       );
-      const data = await res.json();
-      console.log(data);
 
+      const data = await res.json();
       if (data.results && data.results.length > 0) {
         setGeoData(data.results[0]);
 
@@ -23,7 +23,6 @@ const Weather = () => {
         );
         const weatherData = await weatherRes.json();
         setWeather(weatherData);
-        console.log(weatherData);
       } else {
         alert('No results found!');
       }
@@ -41,64 +40,42 @@ const Weather = () => {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'blue',
-        alignItems: 'start',
-        gap: 10,
-        width: '100%',
-        justifyContent: 'center',
-        height: '50vh',
-        padding: 20,
-        color: 'white',
-      }}
-    >
-      <input
-        value={cityName}
-        onChange={(e) => setCityName(e.target.value)}
-        style={{
-          padding: 4,
-          borderRadius: 4,
-          outline: 'none',
-        }}
-        type="text"
-        placeholder="Enter city or country name"
-      />
-      <button
-        onClick={handleClick}
-        style={{
-          padding: 4,
-          fontSize: '14px',
-          borderRadius: 4,
-          cursor: 'pointer',
-          outline: 'none',
-        }}
-      >
-        Get Weather
-      </button>
+    <div className="weather-container">
+      <div className="search-box">
+        <input
+          type="search"
+          value={cityName}
+          onChange={(e) => setCityName(e.target.value)}
+          placeholder="Enter city or country name"
+        />
+        <button onClick={handleClick}>Get Weather</button>
+      </div>
 
       {geoData && (
-        <div style={{ marginTop: 20 }}>
-          <h3>
-            Current Weather: {geoData?.name}, {geoData?.country}
-          </h3>
-          <p>
-            Temperature: {weather?.current_weather?.temperature}{' '}
-            {weather?.current_weather_units?.temperature}
-          </p>
-          <p>
-            Windspeed: {weather?.current_weather?.windspeed}
-            {weather?.current_weather_units?.windspeed}
-          </p>
-          <p>Humidity: {weather?.hourly?.relative_humidity_2m[0]}%</p>
-          <p>
-            Condition:{' '}
-            {weather?.current_weather?.weathercode !== undefined
-              ? weatherCodeMap?.[weather.current_weather.weathercode]
-              : ''}
-          </p>
+        <div className="weather-wrapper">
+          <div className="weather-info">
+            <h3>
+              Current Weather: {geoData?.name}, {geoData?.country}
+            </h3>
+            <p>
+              Temperature: {weather?.current_weather?.temperature}
+              {weather?.current_weather_units?.temperature}
+            </p>
+            <p>
+              Windspeed: {weather?.current_weather?.windspeed}
+              {weather?.current_weather_units?.windspeed}
+            </p>
+            <p>Humidity: {weather?.hourly?.relative_humidity_2m[0]}%</p>
+            <p>
+              Condition:{' '}
+              {weather?.current_weather?.weathercode !== undefined &&
+                weatherCodeMap?.[weather.current_weather.weathercode]}
+            </p>
+          </div>
+          <div className="weather-icon">
+            {weather?.current_weather?.weathercode !== undefined &&
+              WeatherCodeIcons?.[weather.current_weather.weathercode]}
+          </div>
         </div>
       )}
     </div>
