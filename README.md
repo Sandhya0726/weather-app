@@ -1,6 +1,6 @@
 # Weather-App
 
-This is a simple weather application built with Vite + React + Typrescript that allows users to search for the current weather of any city. The app fetches real-time weather data using the Open-Meteo's API and displays it in a clean, user-friendly interface.
+This is a simple weather application built with Vite + React + Typescript that allows users to search for the current weather of any city. The app fetches real-time weather data using the Open-Meteo's API and displays it in a clean, user-friendly interface.
 
 # Features
 
