@@ -4,30 +4,32 @@ This is a simple weather application built with Vite + React that allows users t
 
 # Features
 
-Search weather by city or country
-Displays temperature, humidity, weather condition, and icons
-Styled using CSS
-Real-time API integration
+- Search weather by city or country
+- Displays temperature, humidity, weather condition, and icons
+- Styled using CSS
+- Real-time API integration
 
 # Tech Stack
 
-React + Vite – Frontend framework
-CSS – Styling
-Open-Meteo API – Weather data
+- React + Vite – Frontend framework
+- CSS – Styling
+- Open-Meteo API – Weather data
 
 # Installation
 
 - Clone the repository
   https://github.com/Sandhya0726/weather-app.git
 
-- Navigate to project directory
-  cd weather-app
+- Navigate to project directory,
 
-- Install dependencies
-  npm install
+  - cd weather-app
 
-- Run the project
-  npm run dev
+- Install dependencies,
+
+  - npm install
+
+- Run the project,
+  - npm run dev
 
 ### Project Structure
 
