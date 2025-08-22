@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WeatherCodeIcons, weatherCodeMap } from '../constants/WeatherCode';
 import type { GeoData, WeatherData } from '../types/WeatherDataTypes';
 import '../styles/Weather.css';
@@ -10,26 +10,51 @@ const Weather = () => {
 
   const fetchData = async () => {
     try {
-      const res = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${cityName}`
-      );
+      if (cityName !== '') {
+        const res = await fetch(
+          `https://geocoding-api.open-meteo.com/v1/search?name=${cityName}`
+        );
 
-      const data = await res.json();
-      if (data.results && data.results.length > 0) {
-        setGeoData(data.results[0]);
+        const data = await res.json();
+        if (data.results && data.results.length > 0) {
+          setGeoData(data.results[0]);
 
+          const weatherRes = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${data.results[0].latitude}&longitude=${data.results[0].longitude}&current_weather=true&hourly=relative_humidity_2m,weathercode&timezone=auto`
+          );
+          const weatherData = await weatherRes.json();
+          setWeather(weatherData);
+        } else {
+          alert('No results found!');
+        }
+      } else {
         const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${data.results[0].latitude}&longitude=${data.results[0].longitude}&current_weather=true&hourly=relative_humidity_2m,weathercode&timezone=auto`
+          `https://api.open-meteo.com/v1/forecast?latitude=${geoData?.latitude}&longitude=${geoData?.longitude}&current_weather=true&hourly=relative_humidity_2m,weathercode&timezone=auto`
         );
         const weatherData = await weatherRes.json();
         setWeather(weatherData);
-      } else {
-        alert('No results found!');
       }
     } catch (error) {
       console.error('Error fetching city:', error);
     }
   };
+
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        setGeoData({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (geoData && !cityName) {
+      fetchData();
+    }
+  }, [geoData]);
 
   const handleClick = () => {
     if (!cityName) {
@@ -38,6 +63,8 @@ const Weather = () => {
       fetchData();
     }
   };
+
+  console.log(weather, 'weatherData');
 
   return (
     <div className="weather-container">
@@ -55,7 +82,10 @@ const Weather = () => {
         <div className="weather-wrapper">
           <div className="weather-info">
             <h3>
-              Current Weather: {geoData?.name}, {geoData?.country}
+              Current Weather:
+              {geoData?.name
+                ? ` ${geoData.name}, ${geoData.country}`
+                : 'Your Location'}
             </h3>
             <p>
               Temperature: {weather?.current_weather?.temperature}
