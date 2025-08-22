@@ -7,6 +7,10 @@
   align-items: center;
   justify-content: center;
 }
+p,
+h3 {
+  color: black;
+}
 .input-section {
   background-color: #89c5fd;
   display: flex;
