@@ -1,6 +1,6 @@
 export type GeoData = {
-  name: string;
-  country: string;
+  name?: string;
+  country?: string;
   latitude: number;
   longitude: number;
 };
@@ -17,5 +17,17 @@ export type WeatherData = {
   };
   hourly: {
     relative_humidity_2m: number[];
+  };
+  daily: {
+    time: number[];
+    temperature_2m_max: number[];
+    temperature_2m_min: number[];
+    weathercode: number[];
+  };
+  daily_units: {
+    time: string;
+    temperature_2m_max: string;
+    temperature_2m_min: string;
+    weathercode: string;
   };
 };

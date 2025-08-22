@@ -1,6 +1,6 @@
 # Weather-App
 
-This is a simple weather application built with Vite + React + Typescript that allows users to search for the current weather of any city. The app fetches real-time weather data using the Open-Meteo's API and displays it in a clean, user-friendly interface.
+This is a simple weather application built with Vite + React + Typescript that allows users to search for the current weather of any city. The app fetches real-time weather data using geolocation and using the Open-Meteo's API and displays weekly weather forecast in a clean, user-friendly interface.
 
 # Features
 
@@ -33,7 +33,30 @@ This is a simple weather application built with Vite + React + Typescript that a
 
 ### Project Structure
 
-- /src: Contains the application source code.
-  - /components: Contains weather component.
-  - /types: TypeScript type definitions.
-  - /styles: Css files.
+├── .gitignore
+├── README.md
+├── eslint.config.js
+├── index.html
+├── package.json
+├── public
+└── vite.svg
+├── src
+├── App.css
+├── App.tsx
+├── assets
+│ └── react.svg
+├── components
+│ └── Weather.tsx
+├── constants
+│ └── WeatherCode.ts
+├── index.css
+├── main.tsx
+├── styles
+│ └── Weather.css
+├── types
+│ └── WeatherDataTypes.ts
+└── vite-env.d.ts
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+└── vite.config.ts
