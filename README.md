@@ -1,6 +1,6 @@
 # Weather-App
 
-This is a simple weather application built with Vite + React + Typescript that allows users to search for the current weather of any city. The app fetches real-time weather data using geolocation and using the Open-Meteo's API and displays weekly weather forecast in a clean, user-friendly interface.
+This is a simple weather application built with Vite + React + Typescript that allows users to search for the current weather of any city. The app fetches real-time weather data using geolocation and the Open-Meteo API and displays weekly weather forecast in a clean, user-friendly interface.
 
 # Features
 
@@ -14,6 +14,11 @@ This is a simple weather application built with Vite + React + Typescript that a
 - React + Vite – Frontend framework
 - CSS – Styling
 - Open-Meteo API – Weather data
+
+# Important Note
+
+The Geolocation API used in this app requires a secure context (HTTPS) or will only work on localhost.
+If you deploy the project, make sure your hosting provider supports HTTPS (e.g., Vercel, Netlify, GitHub Pages with HTTPS enabled).
 
 # Installation
 
