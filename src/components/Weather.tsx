@@ -5,9 +5,12 @@ import {
   weatherCodeMap,
 } from '../constants/WeatherCode';
 import type { GeoData, WeatherData } from '../types/WeatherDataTypes';
+
 import '../styles/Weather.css';
-import { Search } from 'lucide-react';
-import Lottie from 'lottie-react';
+import WeatherCards from './WeatherCards';
+import AnimateIcon from './AnimateIcon';
+import Navbar from './Navbar';
+import { Map } from './MapView';
 
 const Weather = () => {
   const [cityName, setCityName] = useState('');
@@ -35,21 +38,6 @@ const Weather = () => {
       setButtonLoading(false);
     }
   };
-
-  function Map({ lat, lng }: { lat: number; lng: number }) {
-    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}&hl=es;z=14&output=embed`;
-    return (
-      <iframe
-        className="rounded-md"
-        src={mapUrl}
-        width="400"
-        height="300"
-        style={{ border: 0 }}
-        allowFullScreen
-        loading="lazy"
-      ></iframe>
-    );
-  }
 
   const fetchPlaceName = async (latitude: number, longitude: number) => {
     try {
@@ -122,43 +110,18 @@ const Weather = () => {
           : 'bg-blue-50'
       }`}
     >
-      <div className="w-full h-[10vh] bg-indigo-950 flex justify-between items-center px-4">
-        <h2 className="text-white font-bold">Weather App</h2>
-        <div className="w-fit flex justify-end rounded-md bg-white gap-2">
-          <input
-            className="bg-white px-2 py-2 rounded-md w-[150px] md:w-[400px] outline-none"
-            type="search"
-            value={cityName}
-            onChange={(e) => setCityName(e.target.value)}
-            placeholder="Enter city or country name"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleClick();
-              }
-            }}
-            disabled={buttonLoading}
-          />
-          <button
-            onClick={handleClick}
-            className="px-6 bg-gray-300 rounded-r-md text-gray-900 cursor-pointer hover:bg-gray-400 transition-all duration-300 ease-in-out"
-          >
-            {buttonLoading ? (
-              <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-gray-700"></div>
-            ) : (
-              <Search />
-            )}{' '}
-          </button>
-        </div>
-      </div>
+      <Navbar
+        cityName={cityName}
+        onChange={(e) => setCityName(e.target.value)}
+        handleClick={handleClick}
+        loading={buttonLoading}
+      />
 
       {loading && weather?.current_weather?.weathercode !== undefined && (
         <div className="absolute inset-0 right-0 top-0 -z-1 opacity-5">
-          <Lottie
-            animationData={
-              WeatherCodeIcons[weather.current_weather.weathercode]
-            }
-            loop
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          <AnimateIcon
+            animate={WeatherCodeIcons[weather.current_weather.weathercode]}
+            styles={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         </div>
       )}
@@ -193,15 +156,17 @@ const Weather = () => {
                     </p>
                   </div>
                   <div className="text-9xl">
-                    {weather?.current_weather?.weathercode !== undefined && (
-                      <Lottie
-                        animationData={
-                          WeatherCodeIcons[weather.current_weather.weathercode]
-                        }
-                        loop
-                        style={{ width: '100%', height: 400 }}
-                      />
-                    )}
+                    {weather?.current_weather?.weathercode !== undefined &&
+                      WeatherCodeIcons[weather.current_weather.weathercode] && (
+                        <AnimateIcon
+                          animate={
+                            WeatherCodeIcons[
+                              weather.current_weather.weathercode
+                            ]
+                          }
+                          styles={{ width: '100%', height: 400 }}
+                        />
+                      )}
                   </div>
                 </>
               )}
@@ -210,6 +175,7 @@ const Weather = () => {
               <Map lat={geoData?.latitude ?? 0} lng={geoData?.longitude ?? 0} />
             </div>
           </div>
+
           <h3 className="text-black font-bold text-xl">
             Weekly Weather Forecast
           </h3>
@@ -220,47 +186,29 @@ const Weather = () => {
               });
 
               return (
-                <div
+                <WeatherCards
                   key={index}
-                  className="bg-gray-50 p-4 rounded-md flex flex-col gap-2 shadow-lg"
-                >
-                  <p className="text-lg font-semibold !text-gray-500">
-                    {weekdays} <br />
-                    {day}
-                  </p>
-                  <p className="text-md font-semibold !text-blue-400">
-                    Min: {weather?.daily?.temperature_2m_min[index]}
-                    {weather?.daily_units?.temperature_2m_min}
-                  </p>
-                  <p className="text-md font-semibold !text-orange-600">
-                    Max: {weather?.daily?.temperature_2m_max[index]}
-                    {weather?.daily_units?.temperature_2m_max}
-                  </p>
-                  <div className="flex flex-col gap-2 font-semibold">
-                    {weatherCodeMap?.[weather.daily.weathercode[index]] ||
-                      'Condition not known'}
-                    <span className="text-[36px]">
-                      <Lottie
-                        animationData={
-                          WeatherCodeIcons[weather.daily.weathercode[index]]
-                        }
-                        loop
-                        style={{ width: 150, height: 150 }}
-                      />
-                    </span>
-                  </div>
-                </div>
+                  weekdays={weekdays}
+                  day={day}
+                  Min={weather?.daily?.temperature_2m_min[index]}
+                  MinUnit={weather?.daily_units?.temperature_2m_min}
+                  Max={weather?.daily?.temperature_2m_max[index]}
+                  MaxUnit={weather?.daily_units?.temperature_2m_max}
+                  weatherCondition={
+                    weatherCodeMap?.[weather.daily.weathercode[index]] ||
+                    'Condition not known'
+                  }
+                  icon={WeatherCodeIcons?.[weather.daily.weathercode[index]]}
+                />
               );
             })}
           </div>
+
           {weather?.current_weather?.weathercode !== undefined && (
             <div className="absolute inset-0 right-0 top-0 -z-1 opacity-5">
-              <Lottie
-                animationData={
-                  WeatherCodeIcons[weather.current_weather.weathercode]
-                }
-                loop
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              <AnimateIcon
+                animate={WeatherCodeIcons[weather.current_weather.weathercode]}
+                styles={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
             </div>
           )}
