@@ -132,7 +132,7 @@ const Weather = () => {
             <div className="w-fit h-auto rounded-md flex flex-col-reverse md:flex-row items-center justify-between gap-4">
               {geoData && (
                 <>
-                  <div className="text-start">
+                  <div className="text-start pl-4">
                     <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
                       Current Weather of
                       {geoData?.name
@@ -164,14 +164,13 @@ const Weather = () => {
                               weather.current_weather.weathercode
                             ]
                           }
-                          styles={{ width: '100%', height: 400 }}
                         />
                       )}
                   </div>
                 </>
               )}
             </div>
-            <div className="w-full md:w-[30%] h-[40vh] flex items-center justify-center">
+            <div className="w-full md:w-[30%] h-[40vh] mt-8 md:mt-0 flex items-center justify-center">
               <Map lat={geoData?.latitude ?? 0} lng={geoData?.longitude ?? 0} />
             </div>
           </div>
