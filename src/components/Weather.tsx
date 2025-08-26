@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
-import { WeatherCodeIcons, weatherCodeMap } from '../constants/WeatherCode';
+import {
+  WeatherBackgrounds,
+  WeatherCodeIcons,
+  weatherCodeMap,
+} from '../constants/WeatherCode';
 import type { GeoData, WeatherData } from '../types/WeatherDataTypes';
 import '../styles/Weather.css';
 import { Search } from 'lucide-react';
@@ -102,8 +106,15 @@ const Weather = () => {
   };
 
   return (
-    <div className="bg-blue-50 flex flex-col items-center justify-center h-auto w-full">
-      <div className="w-full h-[10vh] bg-blue-900 flex justify-between items-center px-4">
+    <div
+      className={`flex flex-col relative items-center justify-center h-auto w-full transition-colors duration-700 z-10 ${
+        weather?.current_weather?.weathercode !== undefined
+          ? WeatherBackgrounds[weather.current_weather.weathercode] ||
+            'bg-blue-50'
+          : 'bg-blue-50'
+      }`}
+    >
+      <div className="w-full h-[10vh] bg-indigo-950 flex justify-between items-center px-4">
         <h2 className="text-white font-bold">Weather App</h2>
         <div className="w-fit flex justify-end rounded-md bg-white gap-2">
           <input
@@ -121,13 +132,13 @@ const Weather = () => {
           </button>
         </div>
       </div>
-      <div className="w-full p-1 h-auto flex flex-col md:flex-row gap-4 items-start justify-around">
+      <div className="w-full p-1 h-auto flex flex-col md:flex-row gap-4 items-start justify-center">
         <div className="w-fit h-auto rounded-md flex flex-col-reverse md:flex-row items-center justify-between gap-4">
           {geoData && (
             <>
               <div className="text-start">
-                <h3 className="text-2xl md:text-3xl font-bold text-gray-800 font-Poppins">
-                  Current Weather:
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
+                  Current Weather of
                   {geoData?.name
                     ? ` ${geoData.name}, ${geoData.country}`
                     : 'Your Location'}
@@ -155,14 +166,14 @@ const Weather = () => {
                       WeatherCodeIcons[weather.current_weather.weathercode]
                     }
                     loop
-                    style={{ width: 300, height: 300 }}
+                    style={{ width: '100%', height: 400 }}
                   />
                 )}
               </div>
             </>
           )}
         </div>
-        <div className="w-[30%] h-[40vh] flex items-center justify-center">
+        <div className="w-full md:w-[30%] h-[40vh] flex items-center justify-center">
           <Map lat={geoData?.latitude ?? 0} lng={geoData?.longitude ?? 0} />
         </div>
       </div>
@@ -207,6 +218,17 @@ const Weather = () => {
           );
         })}
       </div>
+      {weather?.current_weather?.weathercode !== undefined && (
+        <div className="absolute inset-0 right-0 top-0 -z-1 opacity-5">
+          <Lottie
+            animationData={
+              WeatherCodeIcons[weather.current_weather.weathercode]
+            }
+            loop
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        </div>
+      )}
     </div>
   );
 };
