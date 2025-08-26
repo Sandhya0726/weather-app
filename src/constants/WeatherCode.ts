@@ -66,6 +66,7 @@ export const WeatherCodeIcons: Record<number, object> = {
   95: Thunderstorm,
   96: Thunderstorm,
   99: Thunderstorm,
+  100: LoaderClouds,
 };
 
 export const WeatherBackgrounds: Record<number, string> = {
