@@ -1,10 +1,17 @@
+import Sunny from '../animations/Sunny.json';
+import MainlyClear from '../animations/MainlyClear.json';
+import PartlyCloudy from '../animations/PartlyCloudy.json';
+import RainShower from '../animations/RainShower.json';
+import Rainy from '../animations/Rainy.json';
+import Snowfall from '../animations/Snowfall.json';
+import Thunderstorm from '../animations/Thunderstorm.json';
+import Windy from '../animations/Windy.json';
+
 export const weatherCodeMap: Record<number, string> = {
   0: 'Clear sky',
   1: 'Mainly clear',
   2: 'Partly cloudy',
   3: 'Overcast',
-  45: 'Fog',
-  48: 'Depositing rime fog',
   51: 'Light drizzle',
   53: 'Moderate drizzle',
   55: 'Dense drizzle',
@@ -29,33 +36,31 @@ export const weatherCodeMap: Record<number, string> = {
   99: 'Thunderstorm with heavy hail',
 };
 
-export const WeatherCodeIcons: Record<number, string> = {
-  0: '☀️',
-  1: '🌤️',
-  2: '⛅',
-  3: '☁️',
-  45: '🌫️',
-  48: '🌁',
-  51: '🌦️',
-  53: '🌧️',
-  55: '🌧️',
-  56: '🌨️',
-  57: '❄️',
-  61: '🌧️',
-  63: '🌧️',
-  65: '🌧️',
-  66: '❄️',
-  67: '❄️',
-  71: '❄️',
-  73: '❄️',
-  75: '❄️',
-  77: '🌨️',
-  80: '🌦️',
-  81: '🌧️',
-  82: '🌧️',
-  85: '❄️',
-  86: '❄️',
-  95: '⛈️',
-  96: '⛈️',
-  99: '⛈️',
+export const WeatherCodeIcons: Record<number, object> = {
+  0: Sunny,
+  1: MainlyClear,
+  2: PartlyCloudy,
+  3: Windy,
+  51: RainShower,
+  53: Rainy,
+  55: Rainy,
+  56: Rainy,
+  57: Snowfall,
+  61: Rainy,
+  63: Rainy,
+  65: Rainy,
+  66: Snowfall,
+  67: Snowfall,
+  71: Snowfall,
+  73: Snowfall,
+  75: Snowfall,
+  77: Snowfall,
+  80: RainShower,
+  81: Rainy,
+  82: Rainy,
+  85: Snowfall,
+  86: Snowfall,
+  95: Thunderstorm,
+  96: Thunderstorm,
+  99: Thunderstorm,
 };

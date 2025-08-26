@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { WeatherCodeIcons, weatherCodeMap } from '../constants/WeatherCode';
 import type { GeoData, WeatherData } from '../types/WeatherDataTypes';
 import '../styles/Weather.css';
+import { Search } from 'lucide-react';
+import Lottie from 'lottie-react';
 
 const Weather = () => {
   const [cityName, setCityName] = useState('');
@@ -24,6 +26,21 @@ const Weather = () => {
       console.log(err, 'err');
     }
   };
+
+  function Map({ lat, lng }: { lat: number; lng: number }) {
+    const mapUrl = `https://www.google.com/maps?q=${lat},${lng}&hl=es;z=14&output=embed`;
+    return (
+      <iframe
+        className="rounded-md"
+        src={mapUrl}
+        width="400"
+        height="300"
+        style={{ border: 0 }}
+        allowFullScreen
+        loading="lazy"
+      ></iframe>
+    );
+  }
 
   const fetchPlaceName = async (latitude: number, longitude: number) => {
     try {
@@ -85,84 +102,112 @@ const Weather = () => {
   };
 
   return (
-    <>
-      <div className="weather-container">
-        <div className="input-section">
-          <div className="search-box">
-            <input
-              type="search"
-              value={cityName}
-              onChange={(e) => setCityName(e.target.value)}
-              placeholder="Enter city or country name"
-            />
-            <button onClick={handleClick}>Get Weather</button>
-          </div>
+    <div className="bg-blue-50 flex flex-col items-center justify-center h-auto w-full">
+      <div className="w-full h-[10vh] bg-blue-900 flex justify-between items-center px-4">
+        <h2 className="text-white font-bold">Weather App</h2>
+        <div className="w-fit flex justify-end rounded-md bg-white gap-2">
+          <input
+            className="bg-white px-2 py-2 rounded-md w-[150px] md:w-[400px] outline-none"
+            type="search"
+            value={cityName}
+            onChange={(e) => setCityName(e.target.value)}
+            placeholder="Enter city or country name"
+          />
+          <button
+            onClick={handleClick}
+            className="px-6 bg-gray-300 rounded-r-md text-gray-900 cursor-pointer hover:bg-gray-400 transition-all duration-300 ease-in-out"
+          >
+            <Search />
+          </button>
+        </div>
+      </div>
+      <div className="w-full p-1 h-auto flex flex-col md:flex-row gap-4 items-start justify-around">
+        <div className="w-fit h-auto rounded-md flex flex-col-reverse md:flex-row items-center justify-between gap-4">
           {geoData && (
-            <div className="weather-wrapper">
-              <div className="weather-info">
-                <h3>
+            <>
+              <div className="text-start">
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-800 font-Poppins">
                   Current Weather:
                   {geoData?.name
                     ? ` ${geoData.name}, ${geoData.country}`
                     : 'Your Location'}
                 </h3>
-                <p>
-                  Temperature: {weather?.current_weather?.temperature}
+                <p className="text-4xl font-semibold !text-blue-800">
+                  {weather?.current_weather?.temperature}
                   {weather?.current_weather_units?.temperature}
                 </p>
-                <p>
-                  Windspeed: {weather?.current_weather?.windspeed}
-                  {weather?.current_weather_units?.windspeed}
-                </p>
-                <p>Humidity: {weather?.hourly?.relative_humidity_2m[0]}%</p>
-                <p>
-                  Condition:{' '}
+                <p className="text-lg !text-gray-800 font-bold">
                   {weather?.current_weather?.weathercode !== undefined &&
                     weatherCodeMap?.[weather.current_weather.weathercode]}
                 </p>
+                <p className="text-lg !text-gray-600 font-regular">
+                  Windspeed: {weather?.current_weather?.windspeed}
+                  {weather?.current_weather_units?.windspeed}
+                </p>
+                <p className="text-lg !text-gray-600 font-regular">
+                  Humidity: {weather?.hourly?.relative_humidity_2m[0]}%
+                </p>
               </div>
-              <div className="weather-icon">
-                {weather?.current_weather?.weathercode !== undefined &&
-                  WeatherCodeIcons?.[weather.current_weather.weathercode]}
+              <div className="text-9xl">
+                {weather?.current_weather?.weathercode !== undefined && (
+                  <Lottie
+                    animationData={
+                      WeatherCodeIcons[weather.current_weather.weathercode]
+                    }
+                    loop
+                    style={{ width: 300, height: 300 }}
+                  />
+                )}
               </div>
-            </div>
+            </>
           )}
         </div>
-
-        <h3 style={{ placeSelf: 'center' }}>Weekly Weather Forecast</h3>
-        <div className="weekly-container">
-          {weather?.daily?.time?.map((day, index) => {
-            const weekdays = new Date(day).toLocaleString('en-US', {
-              weekday: 'short',
-            });
-
-            return (
-              <div key={index} className="weekly-day">
-                <p className="day-title">
-                  {weekdays} <br />
-                  {day}
-                </p>
-                <p>
-                  Min: {weather?.daily?.temperature_2m_min[index]}
-                  {weather?.daily_units?.temperature_2m_min}
-                </p>
-                <p>
-                  Max: {weather?.daily?.temperature_2m_max[index]}
-                  {weather?.daily_units?.temperature_2m_max}
-                </p>
-                <div className="weekly-condition">
-                  {weatherCodeMap?.[weather.daily.weathercode[index]] ||
-                    'Condition not known'}
-                  <span className="weekly-icon">
-                    {WeatherCodeIcons?.[weather.daily.weathercode[index]]}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+        <div className="w-[30%] h-[40vh] flex items-center justify-center">
+          <Map lat={geoData?.latitude ?? 0} lng={geoData?.longitude ?? 0} />
         </div>
       </div>
-    </>
+      <h3 className="text-black font-bold text-xl">Weekly Weather Forecast</h3>
+      <div className="w-full h-auto p-10 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7  gap-4">
+        {weather?.daily?.time?.map((day, index) => {
+          const weekdays = new Date(day).toLocaleString('en-US', {
+            weekday: 'short',
+          });
+
+          return (
+            <div
+              key={index}
+              className="bg-gray-50 p-4 rounded-md flex flex-col gap-2 shadow-lg"
+            >
+              <p className="text-lg font-semibold !text-gray-500">
+                {weekdays} <br />
+                {day}
+              </p>
+              <p className="text-md font-semibold !text-blue-400">
+                Min: {weather?.daily?.temperature_2m_min[index]}
+                {weather?.daily_units?.temperature_2m_min}
+              </p>
+              <p className="text-md font-semibold !text-orange-600">
+                Max: {weather?.daily?.temperature_2m_max[index]}
+                {weather?.daily_units?.temperature_2m_max}
+              </p>
+              <div className="flex flex-col gap-2 font-semibold">
+                {weatherCodeMap?.[weather.daily.weathercode[index]] ||
+                  'Condition not known'}
+                <span className="text-[36px]">
+                  <Lottie
+                    animationData={
+                      WeatherCodeIcons[weather.daily.weathercode[index]]
+                    }
+                    loop
+                    style={{ width: 150, height: 150 }}
+                  />
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
