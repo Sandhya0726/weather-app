@@ -8,12 +8,15 @@ This is a simple weather application built with Vite + React + Typescript that a
 - Displays temperature, humidity, weather condition, and icons
 - Styled using CSS
 - Real-time API integration
+- Custom hooks for reusable and readable code
 
 # Tech Stack
 
 - React + Vite – Frontend framework
-- CSS – Styling
+- Typescript - Type Safety
+- Tailwind CSS – Styling
 - Open-Meteo API – Weather data
+- Lottie Animations – Animated weather icons
 
 # Important Note
 
@@ -48,17 +51,38 @@ If you deploy the project, make sure your hosting provider supports HTTPS (e.g.,
 ├── src
 ├── App.css
 ├── App.tsx
+├── animations
+│ ├── LoaderClouds.json
+│ ├── MainlyClear.json
+│ ├── PartlyCloudy.json
+│ ├── RainShower.json
+│ ├── Rainy.json
+│ ├── Snowfall.json
+│ ├── Sunny.json
+│ ├── Thunderstorm.json
+│ └── Windy.json
 ├── assets
 │ └── react.svg
 ├── components
-│ └── Weather.tsx
+│ ├── AnimateIcon.tsx
+│ ├── MapView.tsx
+│ ├── Navbar.tsx
+│ ├── Weather.tsx
+│ └── WeatherCards.tsx
 ├── constants
 │ └── WeatherCode.ts
+├── declaration.d.ts
+├── hooks
+│ ├── useDebouncedInput.tsx
+│ ├── useGeoLocation.tsx
+│ ├── useGeoSearch.tsx
+│ └── useWeather.tsx
 ├── index.css
 ├── main.tsx
-├── styles
-│ └── Weather.css
 ├── types
+│ ├── AnimateIconProps.ts
+│ ├── NavbarProps.ts
+│ ├── WeatherCardsProps.ts
 │ └── WeatherDataTypes.ts
 └── vite-env.d.ts
 ├── tsconfig.app.json
