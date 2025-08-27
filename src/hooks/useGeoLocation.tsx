@@ -3,6 +3,7 @@ import type { GeoData } from '../types/WeatherDataTypes';
 
 export function useGeoLocation() {
   const [geoData, setGeoData] = useState<GeoData>();
+  const apiKey = import.meta.env.VITE_OPEN_CAGE_API;
 
   useEffect(() => {
     if ('geolocation' in navigator) {
@@ -12,7 +13,7 @@ export function useGeoLocation() {
 
         try {
           const res = await fetch(
-            `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=7a7881070f68414c8ec5d9bab426a380`
+            `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}`
           );
           const data = await res.json();
 
