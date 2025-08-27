@@ -67,7 +67,7 @@ const Weather = () => {
             <div className="w-fit h-auto rounded-md flex flex-col-reverse md:flex-row items-center justify-between gap-4">
               <div className="text-start pl-4">
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
-                  Current Weather of{' '}
+                  Current Weather of
                   {activeGeo?.name
                     ? ` ${activeGeo.name}, ${activeGeo.country}`
                     : 'Your Location'}
@@ -98,12 +98,12 @@ const Weather = () => {
               </div>
             </div>
 
-            <div className="w-full md:w-[30%] h-[40vh] mt-8 md:mt-0 flex items-center justify-center">
+            <div className="w-full md:w-[30%] h-[auto] mt-8 flex items-center justify-center">
               <Map lat={activeGeo.latitude} lng={activeGeo.longitude} />
             </div>
           </div>
 
-          <h3 className="text-black font-bold text-xl">
+          <h3 className="text-black font-bold my-8 sm:my-0 text-xl">
             Weekly Weather Forecast
           </h3>
           <div className="w-full h-auto p-2 md:p-10 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4">
