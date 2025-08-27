@@ -6,7 +6,6 @@ import {
 } from '../constants/WeatherCode';
 import type { GeoData } from '../types/WeatherDataTypes';
 
-import '../styles/Weather.css';
 import WeatherCards from './WeatherCards';
 import AnimateIcon from './AnimateIcon';
 import Navbar from './Navbar';
