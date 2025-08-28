@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import {
   WeatherBackgrounds,
   WeatherCodeIcons,
@@ -6,15 +6,16 @@ import {
 } from '../constants/WeatherCode';
 import type { GeoData } from '../types/WeatherDataTypes';
 
-import WeatherCards from './WeatherCards';
-import AnimateIcon from './AnimateIcon';
-import Navbar from './Navbar';
 import { Map } from './MapView';
 
 import { useDebouncedInput } from '../hooks/useDebouncedInput';
 import { useGeoSearch } from '../hooks/useGeoSearch';
 import { useGeoLocation } from '../hooks/useGeoLocation';
 import { useWeather } from '../hooks/useWeather';
+
+const Navbar = lazy(() => import('./Navbar'));
+const WeatherCards = lazy(() => import('./WeatherCards'));
+const AnimateIcon = lazy(() => import('./AnimateIcon'));
 
 const Weather = () => {
   const [cityName, setCityName] = useState('');
@@ -45,19 +46,23 @@ const Weather = () => {
           : 'bg-blue-50'
       }`}
     >
-      <Navbar
-        cityName={cityName}
-        onChange={(e) => setCityName(e.target.value)}
-        handleClick={handleClick}
-        loading={geoLoading}
-      />
+      <Suspense fallback={<h3>Loading Navbar</h3>}>
+        <Navbar
+          cityName={cityName}
+          onChange={(e) => setCityName(e.target.value)}
+          handleClick={handleClick}
+          loading={geoLoading}
+        />
+      </Suspense>
 
       {weatherLoading && weather?.current_weather?.weathercode && (
         <div className="absolute inset-0 right-0 top-0 -z-1 opacity-5">
-          <AnimateIcon
-            animate={WeatherCodeIcons[weather.current_weather.weathercode]}
-            styles={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
+          <Suspense fallback={<h3>Loading Icon</h3>}>
+            <AnimateIcon
+              animate={WeatherCodeIcons[weather.current_weather.weathercode]}
+              styles={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
+          </Suspense>
         </div>
       )}
 
@@ -89,11 +94,13 @@ const Weather = () => {
               </div>
               <div className="text-9xl">
                 {WeatherCodeIcons[weather.current_weather.weathercode] && (
-                  <AnimateIcon
-                    animate={
-                      WeatherCodeIcons[weather.current_weather.weathercode]
-                    }
-                  />
+                  <Suspense fallback={<h3>Loading Icon</h3>}>
+                    <AnimateIcon
+                      animate={
+                        WeatherCodeIcons[weather.current_weather.weathercode]
+                      }
+                    />
+                  </Suspense>
                 )}
               </div>
             </div>
@@ -106,30 +113,32 @@ const Weather = () => {
           <h3 className="text-black font-bold my-8 sm:my-0 text-xl">
             Weekly Weather Forecast
           </h3>
-          <div className="w-full h-auto p-2 md:p-10 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4">
-            {weather?.daily?.time?.map((day, index) => {
-              const weekdays = new Date(day).toLocaleString('en-US', {
-                weekday: 'short',
-              });
+          <Suspense fallback={<h3>Weekly forecast loading</h3>}>
+            <div className="w-full h-auto p-2 md:p-10 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4">
+              {weather?.daily?.time?.map((day, index) => {
+                const weekdays = new Date(day).toLocaleString('en-US', {
+                  weekday: 'short',
+                });
 
-              return (
-                <WeatherCards
-                  key={index}
-                  weekdays={weekdays}
-                  day={day}
-                  Min={weather?.daily?.temperature_2m_min[index]}
-                  MinUnit={weather?.daily_units?.temperature_2m_min}
-                  Max={weather?.daily?.temperature_2m_max[index]}
-                  MaxUnit={weather?.daily_units?.temperature_2m_max}
-                  weatherCondition={
-                    weatherCodeMap?.[weather.daily.weathercode[index]] ||
-                    'Condition not known'
-                  }
-                  icon={WeatherCodeIcons?.[weather.daily.weathercode[index]]}
-                />
-              );
-            })}
-          </div>
+                return (
+                  <WeatherCards
+                    key={index}
+                    weekdays={weekdays}
+                    day={day}
+                    Min={weather?.daily?.temperature_2m_min[index]}
+                    MinUnit={weather?.daily_units?.temperature_2m_min}
+                    Max={weather?.daily?.temperature_2m_max[index]}
+                    MaxUnit={weather?.daily_units?.temperature_2m_max}
+                    weatherCondition={
+                      weatherCodeMap?.[weather.daily.weathercode[index]] ||
+                      'Condition not known'
+                    }
+                    icon={WeatherCodeIcons?.[weather.daily.weathercode[index]]}
+                  />
+                );
+              })}
+            </div>
+          </Suspense>
         </>
       )}
     </div>

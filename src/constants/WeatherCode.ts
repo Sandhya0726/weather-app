@@ -1,12 +1,12 @@
-import Sunny from '../animations/Sunny.json';
-import MainlyClear from '../animations/MainlyClear.json';
-import PartlyCloudy from '../animations/PartlyCloudy.json';
-import RainShower from '../animations/RainShower.json';
-import Rainy from '../animations/Rainy.json';
-import Snowfall from '../animations/Snowfall.json';
-import Thunderstorm from '../animations/Thunderstorm.json';
-import Windy from '../animations/Windy.json';
-import LoaderClouds from '../animations/LoaderClouds.json';
+import Sunny from '../assets/animations/Sunny.json';
+import MainlyClear from '../assets/animations/MainlyClear.json';
+import PartlyCloudy from '../assets/animations/PartlyCloudy.json';
+import RainShower from '../assets/animations/RainShower.json';
+import Rainy from '../assets/animations/Rainy.json';
+import Snowfall from '../assets/animations/Snowfall.json';
+import Thunderstorm from '../assets/animations/Thunderstorm.json';
+import Windy from '../assets/animations/Windy.json';
+import LoaderClouds from '../assets/animations/LoaderClouds.json';
 
 export const weatherCodeMap: Record<number, string> = {
   0: 'Clear sky',
