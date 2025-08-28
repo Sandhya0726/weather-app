@@ -51,20 +51,21 @@ If you deploy the project, make sure your hosting provider supports HTTPS (e.g.,
 ├── src
 ├── App.css
 ├── App.tsx
-├── animations
-│ ├── LoaderClouds.json
-│ ├── MainlyClear.json
-│ ├── PartlyCloudy.json
-│ ├── RainShower.json
-│ ├── Rainy.json
-│ ├── Snowfall.json
-│ ├── Sunny.json
-│ ├── Thunderstorm.json
-│ └── Windy.json
 ├── assets
+│ ├── animations
+│ │ ├── LoaderClouds.json
+│ │ ├── MainlyClear.json
+│ │ ├── PartlyCloudy.json
+│ │ ├── RainShower.json
+│ │ ├── Rainy.json
+│ │ ├── Snowfall.json
+│ │ ├── Sunny.json
+│ │ ├── Thunderstorm.json
+│ │ └── Windy.json
 │ └── react.svg
 ├── components
 │ ├── AnimateIcon.tsx
+│ ├── Loader.tsx
 │ ├── MapView.tsx
 │ ├── Navbar.tsx
 │ ├── Weather.tsx
