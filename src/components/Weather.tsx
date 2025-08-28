@@ -12,6 +12,7 @@ import { useDebouncedInput } from '../hooks/useDebouncedInput';
 import { useGeoSearch } from '../hooks/useGeoSearch';
 import { useGeoLocation } from '../hooks/useGeoLocation';
 import { useWeather } from '../hooks/useWeather';
+import Loader from './Loader';
 
 const Navbar = lazy(() => import('./Navbar'));
 const WeatherCards = lazy(() => import('./WeatherCards'));
@@ -46,7 +47,7 @@ const Weather = () => {
           : 'bg-blue-50'
       }`}
     >
-      <Suspense fallback={<h3>Loading Navbar</h3>}>
+      <Suspense fallback={<Loader />}>
         <Navbar
           cityName={cityName}
           onChange={(e) => setCityName(e.target.value)}
@@ -57,7 +58,7 @@ const Weather = () => {
 
       {weatherLoading && weather?.current_weather?.weathercode && (
         <div className="absolute inset-0 right-0 top-0 -z-1 opacity-5">
-          <Suspense fallback={<h3>Loading Icon</h3>}>
+          <Suspense fallback={<Loader />}>
             <AnimateIcon
               animate={WeatherCodeIcons[weather.current_weather.weathercode]}
               styles={{ width: '100%', height: '100%', objectFit: 'cover' }}
@@ -94,7 +95,7 @@ const Weather = () => {
               </div>
               <div className="text-9xl">
                 {WeatherCodeIcons[weather.current_weather.weathercode] && (
-                  <Suspense fallback={<h3>Loading Icon</h3>}>
+                  <Suspense fallback={<Loader />}>
                     <AnimateIcon
                       animate={
                         WeatherCodeIcons[weather.current_weather.weathercode]
@@ -113,7 +114,8 @@ const Weather = () => {
           <h3 className="text-black font-bold my-8 sm:my-0 text-xl">
             Weekly Weather Forecast
           </h3>
-          <Suspense fallback={<h3>Weekly forecast loading</h3>}>
+
+          <Suspense fallback={<h3>Weekly Forecast Loading... </h3>}>
             <div className="w-full h-auto p-2 md:p-10 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4">
               {weather?.daily?.time?.map((day, index) => {
                 const weekdays = new Date(day).toLocaleString('en-US', {
