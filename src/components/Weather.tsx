@@ -115,7 +115,7 @@ const Weather = () => {
             Weekly Weather Forecast
           </h3>
 
-          <Suspense fallback={<h3>Weekly Forecast Loading... </h3>}>
+          <Suspense fallback={<h3>Weekly Forecast Loading.... </h3>}>
             <div className="w-full h-auto p-2 md:p-10 grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-4">
               {weather?.daily?.time?.map((day, index) => {
                 const weekdays = new Date(day).toLocaleString('en-US', {
