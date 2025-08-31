@@ -4,7 +4,6 @@ import type { GeoData } from '../types/WeatherDataTypes';
 export function useGeoLocation() {
   const [geoData, setGeoData] = useState<GeoData>();
   const apiKey = import.meta.env.VITE_OPEN_CAGE_API;
-  console.log(apiKey);
 
   useEffect(() => {
     if ('geolocation' in navigator) {
