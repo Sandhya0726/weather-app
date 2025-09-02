@@ -21,13 +21,13 @@ export function useGeoLocation() {
             setGeoData({
               latitude,
               longitude,
-              name:
+              city:
                 data.results[0].components.city_district ||
                 data.results[0].components.county,
               country: data.results[0].components.country,
             });
           } else {
-            setGeoData({ latitude, longitude, name: 'Unknown', country: '' });
+            setGeoData({ latitude, longitude, city: 'Unknown', country: '' });
           }
         } catch (err) {
           console.error('Reverse geocoding error:', err);
