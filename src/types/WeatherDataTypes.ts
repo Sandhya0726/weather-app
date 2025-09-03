@@ -1,4 +1,10 @@
 export type GeoData = {
+  name?: string;
+  country?: string;
+  latitude: number;
+  longitude: number;
+};
+export type GeoDataFromIP = {
   city?: string;
   country?: string;
   latitude: number;

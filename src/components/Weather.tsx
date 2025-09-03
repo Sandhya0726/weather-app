@@ -4,7 +4,7 @@ import {
   WeatherCodeIcons,
   weatherCodeMap,
 } from '../constants/WeatherCode';
-import type { GeoData } from '../types/WeatherDataTypes';
+import type { GeoData, GeoDataFromIP } from '../types/WeatherDataTypes';
 
 import { Map } from './MapView';
 
@@ -27,7 +27,7 @@ const Weather = () => {
   const geoFromIP = useGetLocationFromIP();
 
   const { geoData, loading: geoLoading, fetchByCountry } = useGeoSearch();
-  const activeGeo: GeoData | null =
+  const activeGeo: GeoData | GeoDataFromIP | null =
     geoData ?? geoFromBrowser ?? geoFromIP ?? null;
 
   const { weather, loading: weatherLoading } = useWeather(
@@ -77,8 +77,10 @@ const Weather = () => {
               <div className="text-start pl-4">
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
                   Current Weather of
-                  {activeGeo?.city &&
-                    ` ${activeGeo.city}, ${activeGeo.country}`}
+                  {(activeGeo?.name || activeGeo?.city) &&
+                    ` ${activeGeo.name || activeGeo?.city}, ${
+                      activeGeo.country
+                    }`}
                 </h3>
                 <p className="text-4xl font-semibold !text-blue-800">
                   {weather?.current_weather?.temperature}
