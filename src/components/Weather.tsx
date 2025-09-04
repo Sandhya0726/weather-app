@@ -12,6 +12,7 @@ import { useDebouncedInput } from '../hooks/useDebouncedInput';
 import { useGeoSearch } from '../hooks/useGeoSearch';
 import { useGeoLocation } from '../hooks/useGeoLocation';
 import { useWeather } from '../hooks/useWeather';
+import { useGetLocationFromIP } from '../hooks/useGetLocationFromIP';
 import Loader from './Loader';
 
 const Navbar = lazy(() => import('./Navbar'));
@@ -23,9 +24,11 @@ const Weather = () => {
 
   const debouncedCity = useDebouncedInput({ value: cityName, delay: 1000 });
   const geoFromBrowser = useGeoLocation();
-  const { geoData, loading: geoLoading, fetchByCountry } = useGeoSearch();
+  const geoFromIP = useGetLocationFromIP();
 
-  const activeGeo: GeoData | null = geoData ?? geoFromBrowser ?? null;
+  const { geoData, loading: geoLoading, fetchByCountry } = useGeoSearch();
+  const activeGeo: GeoData | null =
+    geoData ?? geoFromBrowser ?? geoFromIP ?? null;
 
   const { weather, loading: weatherLoading } = useWeather(
     activeGeo?.latitude,
@@ -40,7 +43,7 @@ const Weather = () => {
 
   return (
     <div
-      className={`flex flex-col relative items-center justify-center h-auto w-full transition-colors duration-700 z-10 ${
+      className={`flex flex-col relative items-center justify-start min-h-screen w-full transition-colors duration-700 z-10 ${
         weather?.current_weather?.weathercode !== undefined
           ? WeatherBackgrounds[weather.current_weather.weathercode] ||
             'bg-blue-50'
@@ -56,8 +59,8 @@ const Weather = () => {
         />
       </Suspense>
 
-      {weatherLoading && weather?.current_weather?.weathercode && (
-        <div className="absolute inset-0 right-0 top-0 -z-1 opacity-5">
+      {!weatherLoading && weather?.current_weather?.weathercode && (
+        <div className="absolute inset-0 right-0 top-0 -z-10 opacity-5">
           <Suspense fallback={<Loader />}>
             <AnimateIcon
               animate={WeatherCodeIcons[weather.current_weather.weathercode]}
@@ -69,15 +72,17 @@ const Weather = () => {
 
       {!weatherLoading && activeGeo && weather && (
         <>
-          <div className="w-full p-1 h-auto flex flex-col md:flex-row gap-4 items-start justify-center">
+          <div className="w-full p-1 h-auto flex flex-col md:flex-row gap-4 items-start justify-around">
             <div className="w-fit h-auto rounded-md flex flex-col-reverse md:flex-row items-center justify-between gap-4">
               <div className="text-start pl-4">
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
                   Current Weather of
-                  {activeGeo?.name
-                    ? ` ${activeGeo.name}, ${activeGeo.country}`
-                    : 'Your Location'}
+                  {(activeGeo?.name ?? activeGeo.city) &&
+                    ` ${activeGeo?.name ?? activeGeo.city}, ${
+                      activeGeo.country
+                    }`}
                 </h3>
+
                 <p className="text-4xl font-semibold !text-blue-800">
                   {weather?.current_weather?.temperature}
                   {weather?.current_weather_units?.temperature}
@@ -106,8 +111,12 @@ const Weather = () => {
               </div>
             </div>
 
-            <div className="w-full md:w-[30%] h-[auto] mt-8 flex items-center justify-center">
-              <Map lat={activeGeo.latitude} lng={activeGeo.longitude} />
+            <div className="w-[40%] h-[50vh] mt-8 lg:flex items-center justify-end hidden">
+              <Map
+                lat={activeGeo.latitude}
+                lng={activeGeo.longitude}
+                cityName={activeGeo?.city ?? activeGeo?.country}
+              />
             </div>
           </div>
 
