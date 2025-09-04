@@ -4,7 +4,7 @@ import {
   WeatherCodeIcons,
   weatherCodeMap,
 } from '../constants/WeatherCode';
-import type { GeoData, GeoDataFromIP } from '../types/WeatherDataTypes';
+import type { GeoData } from '../types/WeatherDataTypes';
 
 import { Map } from './MapView';
 
@@ -27,7 +27,7 @@ const Weather = () => {
   const geoFromIP = useGetLocationFromIP();
 
   const { geoData, loading: geoLoading, fetchByCountry } = useGeoSearch();
-  const activeGeo: GeoData | GeoDataFromIP | null =
+  const activeGeo: GeoData | null =
     geoData ?? geoFromBrowser ?? geoFromIP ?? null;
 
   const { weather, loading: weatherLoading } = useWeather(
@@ -59,8 +59,8 @@ const Weather = () => {
         />
       </Suspense>
 
-      {weatherLoading && weather?.current_weather?.weathercode && (
-        <div className="absolute inset-0 right-0 top-0 -z-1 opacity-5">
+      {!weatherLoading && weather?.current_weather?.weathercode && (
+        <div className="absolute inset-0 right-0 top-0 -z-10 opacity-5">
           <Suspense fallback={<Loader />}>
             <AnimateIcon
               animate={WeatherCodeIcons[weather.current_weather.weathercode]}
@@ -77,11 +77,12 @@ const Weather = () => {
               <div className="text-start pl-4">
                 <h3 className="text-2xl md:text-3xl font-bold text-gray-800">
                   Current Weather of
-                  {(activeGeo?.name || activeGeo?.city) &&
-                    ` ${activeGeo.name || activeGeo?.city}, ${
+                  {(activeGeo?.name ?? activeGeo.city) &&
+                    ` ${activeGeo?.name ?? activeGeo.city}, ${
                       activeGeo.country
                     }`}
                 </h3>
+
                 <p className="text-4xl font-semibold !text-blue-800">
                   {weather?.current_weather?.temperature}
                   {weather?.current_weather_units?.temperature}
@@ -110,8 +111,12 @@ const Weather = () => {
               </div>
             </div>
 
-            <div className="bg-amber-800 h-[auto] mt-8 lg:flex items-center justify-end hidden">
-              <Map lat={activeGeo.latitude} lng={activeGeo.longitude} />
+            <div className="w-[40%] h-[50vh] mt-8 lg:flex items-center justify-end hidden">
+              <Map
+                lat={activeGeo.latitude}
+                lng={activeGeo.longitude}
+                cityName={activeGeo?.city ?? activeGeo?.country}
+              />
             </div>
           </div>
 
