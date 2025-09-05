@@ -6,7 +6,7 @@ type MapProps = {
   cityName: string | undefined;
 };
 
-export function Map({ lat, lng, cityName }: MapProps) {
+export default function Map({ lat, lng, cityName }: MapProps) {
   return (
     <MapContainer
       center={[lat, lng]}

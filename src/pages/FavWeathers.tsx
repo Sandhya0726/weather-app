@@ -1,8 +1,9 @@
 import useFavouritesStore from '../components/store/AddToFavStore';
-import FavWeatherCards from '../components/FavWeatherCards';
+import { lazy } from 'react';
 
 const FavWeathers = () => {
   const { favourites } = useFavouritesStore();
+  const FavWeatherCards = lazy(() => import('../components/FavWeatherCards'));
 
   return (
     <div className="bg-gradient-to-b from-sky-300 via-sky-100 to-sky-50 w-full min-h-screen">

@@ -6,8 +6,6 @@ import {
 } from '../constants/WeatherCode';
 import type { GeoData } from '../types/WeatherDataTypes';
 
-import { Map } from './MapView';
-
 import { useDebouncedInput } from '../hooks/useDebouncedInput';
 import { useGeoSearch } from '../hooks/useGeoSearch';
 import { useGeoLocation } from '../hooks/useGeoLocation';
@@ -21,6 +19,7 @@ import { Link } from 'react-router-dom';
 const Navbar = lazy(() => import('./Navbar'));
 const WeatherCards = lazy(() => import('./WeatherCards'));
 const AnimateIcon = lazy(() => import('./AnimateIcon'));
+const Map = lazy(() => import('./MapView'));
 
 const Weather = () => {
   const [cityName, setCityName] = useState('');
