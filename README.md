@@ -5,10 +5,13 @@ This is a simple weather application built with Vite + React + Typescript that a
 # Features
 
 - Search weather by city or country
+- Weather by IP adress if over discards the permission for geolocation
 - Displays temperature, humidity, weather condition, and icons
 - Styled using CSS
 - Real-time API integration
 - Custom hooks for reusable and readable code
+- Save favourite location to see all place's weather at once
+- Mapview and overlays
 
 # Tech Stack
 
@@ -17,6 +20,8 @@ This is a simple weather application built with Vite + React + Typescript that a
 - Tailwind CSS – Styling
 - Open-Meteo API – Weather data
 - Lottie Animations – Animated weather icons
+- Zustand - State Management
+- Leaflet - Mapview and overlays
 
 # Important Note
 
@@ -64,24 +69,33 @@ If you deploy the project, make sure your hosting provider supports HTTPS (e.g.,
 │ │ └── Windy.json
 │ └── react.svg
 ├── components
+│ ├── AddToFavourite.tsx
 │ ├── AnimateIcon.tsx
+│ ├── CardSkeleton.tsx
+│ ├── FavWeatherCards.tsx
 │ ├── Loader.tsx
 │ ├── MapView.tsx
 │ ├── Navbar.tsx
 │ ├── Weather.tsx
-│ └── WeatherCards.tsx
+│ ├── WeatherCards.tsx
+│ └── store
+│ │ └── AddToFavStore.ts
 ├── constants
 │ └── WeatherCode.ts
 ├── declaration.d.ts
 ├── hooks
-│ ├── useDebouncedInput.tsx
-│ ├── useGeoLocation.tsx
-│ ├── useGeoSearch.tsx
-│ └── useWeather.tsx
+│ ├── useDebouncedInput.ts
+│ ├── useGeoLocation.ts
+│ ├── useGeoSearch.ts
+│ ├── useGetLocationFromIP.ts
+│ └── useWeather.ts
 ├── index.css
 ├── main.tsx
+├── pages
+│ └── FavWeathers.tsx
 ├── types
 │ ├── AnimateIconProps.ts
+│ ├── FavWeatherCardProps.ts
 │ ├── NavbarProps.ts
 │ ├── WeatherCardsProps.ts
 │ └── WeatherDataTypes.ts
