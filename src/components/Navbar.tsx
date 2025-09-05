@@ -4,10 +4,10 @@ import type { NavbarProps } from '../types/NavbarProps';
 const Navbar = ({ cityName, onChange, handleClick, loading }: NavbarProps) => {
   return (
     <div className="w-full h-[auto] bg-indigo-950 flex justify-between items-center  p-4">
-      <h2 className="text-white font-bold">Weather App</h2>
+      <h2 className="text-white font-poppins font-bold">Weather App</h2>
       <div className="w-fit flex justify-end rounded-md bg-white gap-2">
         <input
-          className="bg-white p-4 rounded-md w-[150px] md:w-[400px] outline-none"
+          className="bg-white p-4 font-poppins rounded-md w-[150px] md:w-[400px] outline-none"
           type="search"
           value={cityName}
           onChange={onChange}
