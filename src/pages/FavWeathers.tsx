@@ -1,9 +1,8 @@
+import FavWeatherCards from '../components/FavWeatherCards';
 import useFavouritesStore from '../components/store/AddToFavStore';
-import { lazy } from 'react';
 
 const FavWeathers = () => {
   const { favourites } = useFavouritesStore();
-  const FavWeatherCards = lazy(() => import('../components/FavWeatherCards'));
 
   return (
     <div className="bg-gradient-to-b from-sky-300 via-sky-100 to-sky-50 w-full min-h-screen">
@@ -13,14 +12,12 @@ const FavWeathers = () => {
       <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
         {favourites.length > 0 ? (
           favourites.map((item, index) => (
-            <>
-              <FavWeatherCards
-                key={index}
-                city={item.name}
-                lat={item.lat}
-                lon={item.lon}
-              />
-            </>
+            <FavWeatherCards
+              key={index}
+              city={item.name}
+              lat={item.lat}
+              lon={item.lon}
+            />
           ))
         ) : (
           <p className="col-span-full text-center text-lg font-semibold text-gray-700">
